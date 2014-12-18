@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/D:/Dokumente/Ausbildung/fhnw/Enterprise%20Application%20Integration%20and%20Service%20Oriented%20Architecture/Semesteraufgabe/service.wsdl" uri="xml-resources/web-service-references/service/wsdl/service.wsdl"/>
+</catalog>
