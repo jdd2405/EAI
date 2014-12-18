@@ -5,6 +5,9 @@
  */
 package ch.fhnw.eai;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Jonas
@@ -12,9 +15,16 @@ package ch.fhnw.eai;
 public class Main {
 
     public static void main(String[] args) {
-        printKontokorrent();
-        System.out.println("Kontokorrent: "+listeKontokorrentNachname());
-        System.out.println("Sparkontos: "+ listeSparkontoNachname());
+        try {
+            printKontokorrent();
+            printSparkonto();
+            System.out.println("Kontokorrent: "+listeKontokorrentNachname());
+            System.out.println("Sparkontos: "+ listeSparkontoNachname());
+            DBAccess db = new DBAccess();
+            db.readDataBase();
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private static void holeKontoKorrent(java.lang.String queryVorname, java.lang.String queryNachname, javax.xml.ws.Holder<java.lang.String> vorname, javax.xml.ws.Holder<java.lang.String> nachname, javax.xml.ws.Holder<java.lang.String> adresse, javax.xml.ws.Holder<java.lang.String> land, javax.xml.ws.Holder<java.lang.Integer> ranking, javax.xml.ws.Holder<java.lang.String> ibanKontonummer, javax.xml.ws.Holder<java.lang.Float> kontostand, javax.xml.ws.Holder<java.lang.String> bic) {
