@@ -128,14 +128,25 @@ public class Integrator {
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1];
             }
-            if (name.length == 3 && name[0].equals("Dr.")){
+            else if (name.length == 3 && name[0].equals("Dr.")){
                 dbKunde.vorname = name[1];
                 dbKunde.nachname = name[2];
             }
-            if (name.length == 3){
+            else if (name.length == 3 && name[0].equals("M.")){
+                dbKunde.vorname = name[0] + " " + name[1];
+                dbKunde.nachname = name[2]; 
+            }
+            else if (name.length == 3){
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1]+ " " + name[2]; 
             }
+            if (dbKunde.nachname.equals("HINKELMANN")){
+                String nachnameGrossKlein = dbKunde.nachname;
+                nachnameGrossKlein = nachnameGrossKlein.toLowerCase();
+                nachnameGrossKlein = nachnameGrossKlein.substring(0,1).toUpperCase() + nachnameGrossKlein.substring(1);
+                dbKunde.nachname = nachnameGrossKlein;
+            }
+            
             
             //adresse generieren
             dbKunde.adresse = dbKundeFromIterator.strassenname +", " + dbKundeFromIterator.plz +" " + dbKundeFromIterator.stadt;
@@ -144,16 +155,17 @@ public class Integrator {
             if(dbKundeFromIterator.land.equals("Schweiz") || dbKundeFromIterator.land.equals("Switzerland")){
                 dbKonto.getKunde().setLaendercode("CH");
             }
-            if(dbKundeFromIterator.land.equals("Deutschland") || dbKundeFromIterator.land.equals("Germany")){
+            else if(dbKundeFromIterator.land.equals("Deutschland") || dbKundeFromIterator.land.equals("Germany")){
                 dbKunde.laendercode = "DE";
             }
-            if(dbKundeFromIterator.land.equals("The Netherlands")){
+            else if(dbKundeFromIterator.land.equals("The Netherlands")){
                 dbKunde.laendercode = "NL";
             }
             
             //Kontostand
             dbKonto.setKontostand(dbKundeFromIterator.saldo);
-            dbKonto.setKontoart("not defined");
+            dbKonto.setKontoart("not defined kontoart");
+            dbKonto.getKunde().setStatus("not defined status");
             dbKonto.setIban(""+dbKundeFromIterator.kontonummer);
             
             //dbKunde.status=

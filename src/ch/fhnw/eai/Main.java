@@ -5,6 +5,7 @@
  */
 package ch.fhnw.eai;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -28,6 +29,9 @@ public class Main {
             ArrayList <DBDaten> DBdaten =db.readDataBase();
             ArrayList <Konto> DBkunde = integrator.DBDatenFormatieren(DBdaten);
             
+            //Kontostand 2 Nachkommastellen
+            DecimalFormat f = new DecimalFormat("#0.00");
+            
             ListIterator<Konto> iterator2 = integrator.konten.listIterator();
             while(iterator2.hasNext()){
                 Konto temp = iterator2.next();
@@ -43,6 +47,7 @@ public class Main {
             System.out.println("******************");
             System.out.println("");
             
+            
             ListIterator<Konto> iterator3 = DBkunde.listIterator();
             while(iterator3.hasNext()){
                 Konto temp = iterator3.next();
@@ -50,11 +55,13 @@ public class Main {
                 System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
                 System.out.println(temp.getKunde().getLaendercode());
+                System.out.println(temp.getKunde().getStatus());
                 System.out.println(temp.getIban());
-                System.out.println(temp.getKontostand());
+                System.out.println(f.format(temp.getKontostand()));
+                System.out.println(temp.getKontoart());
                 System.out.println("******************");
             }
-            System.out.println("finish");
+            
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
