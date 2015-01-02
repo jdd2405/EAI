@@ -19,7 +19,8 @@ public class Main {
         try {
             // Macht den ganzen Vergleichs-Kram
             Integrator integrator = new Integrator();
-            
+            integrator.extrahiereKontokorrente();
+            integrator.extrahiereSparkonten();
             
             printKontokorrent();
             printSparkonto();
