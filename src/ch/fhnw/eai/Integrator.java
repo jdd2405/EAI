@@ -128,11 +128,11 @@ public class Integrator {
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1];
             }
-            else if (name.length == 3 && name[0].equals("Dr.")){
+            if (name.length == 3 && name[0].equals("Dr.")){
                 dbKunde.vorname = name[1];
                 dbKunde.nachname = name[2];
             }
-            else if (name.length == 3){
+            if (name.length == 3){
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1]+ " " + name[2]; 
             }
@@ -142,9 +142,18 @@ public class Integrator {
             
             //laendercode
             if(dbKundeFromIterator.land.equals("Schweiz") || dbKundeFromIterator.land.equals("Switzerland")){
-                dbKunde.laendercode = "CH";
-                
+                dbKonto.getKunde().setLaendercode("CH");
             }
+            if(dbKundeFromIterator.land.equals("Deutschland") || dbKundeFromIterator.land.equals("Germany")){
+                dbKunde.laendercode = "DE";
+            }
+            if(dbKundeFromIterator.land.equals("The Netherlands")){
+                dbKunde.laendercode = "NL";
+            }
+            
+            //Kontostand
+            dbKonto.setKontostand(dbKundeFromIterator.saldo);
+            System.out.println("test");
             
             //dbKunde.status=
             DBkonto.add(dbKonto);

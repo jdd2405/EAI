@@ -49,11 +49,13 @@ public class Main {
                 System.out.println(temp.getKunde().getVorname());
                 System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
+                System.out.println("print test");
+                System.out.println(temp.getKunde().getLaendercode());
                 System.out.println(temp.getIban());
                 System.out.println(temp.getKontostand());
                 System.out.println("******************");
             }
-            
+            System.out.println("finish");
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
