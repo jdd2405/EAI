@@ -5,6 +5,8 @@
  */
 package ch.fhnw.eai;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,12 +24,19 @@ public class Main {
             integrator.extrahiereKontokorrente();
             integrator.extrahiereSparkonten();
             
-            printKontokorrent();
-            printSparkonto();
-            System.out.println("Kontokorrent: "+listeKontokorrentNachname());
-            System.out.println("Sparkontos: "+ listeSparkontoNachname());
             DBAccess db = new DBAccess();
             db.readDataBase();
+            
+            ListIterator<Konto> iterator = integrator.konten.listIterator();
+            while(iterator.hasNext()){
+                Konto temp = iterator.next();
+                System.out.println(temp.getKunde().getVorname() + temp.getKunde().getNachname());
+                System.out.println(temp.getKunde().getAdresse());
+                System.out.println(temp.getIban());
+                System.out.println(temp.getKontostand());
+                System.out.println("******************");
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

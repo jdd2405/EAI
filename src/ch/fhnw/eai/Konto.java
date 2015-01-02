@@ -19,6 +19,46 @@ public class Konto {
     public Konto(Kunde kunde) {
         this.kunde = kunde;
     }
+
+    public Konto(Kunde kunde, String iban, double kontostand, String kontoart) {
+        this.kunde = kunde;
+        this.iban = iban;
+        this.kontostand = kontostand;
+        this.kontoart = kontoart;
+    }
+
+    public Kunde getKunde() {
+        return kunde;
+    }
+
+    public void setKunde(Kunde kunde) {
+        this.kunde = kunde;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(String iban) {
+        this.iban = iban;
+    }
+
+    public double getKontostand() {
+        return kontostand;
+    }
+
+    public void setKontostand(double kontostand) {
+        this.kontostand = kontostand;
+    }
+
+    public String getKontoart() {
+        return kontoart;
+    }
+
+    public void setKontoart(String kontoart) {
+        this.kontoart = kontoart;
+    }
+    
     
     
     

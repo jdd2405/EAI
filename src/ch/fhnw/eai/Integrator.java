@@ -69,6 +69,23 @@ public class Integrator {
             queryVorname = null;
             ws.holeSparkonto(queryVorname, queryNachname, vorname, nachname, strasse, plzOrt, zinsen, kontonummer, kontostand);
             System.out.println("Resultat für '"+queryNachname+"' : "+vorname.value+", "+nachname.value+", "+strasse.value+", "+plzOrt.value+", "+zinsen.value+", "+kontonummer.value+", "+kontostand.value);
+            
+            Kunde kunde = new Kunde(vorname.value, nachname.value);
+            kunde.setAdresse(strasse.value+", "+plzOrt.value);
+            Konto konto = new Konto(kunde);
+            konto.setKontostand(kontostand.value);
+            konto.setIban(""+kontonummer.value);
+            if(pruefeEindeutigkeit(kunde)){
+                // To Do: Vergleichen
+                konten.add(konto);
+            }
+            else {
+                kunden.add(kunde);
+                konten.add(konto);
+            }
+            
+            
+            
         } 
     }
     
