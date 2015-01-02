@@ -13,9 +13,14 @@ import java.util.logging.Logger;
  * @author Jonas
  */
 public class Main {
+    
 
     public static void main(String[] args) {
         try {
+            // Macht den ganzen Vergleichs-Kram
+            Integrator integrator = new Integrator();
+            
+            
             printKontokorrent();
             printSparkonto();
             System.out.println("Kontokorrent: "+listeKontokorrentNachname());
