@@ -49,7 +49,7 @@ public class Main {
                 System.out.println(temp.getKunde().getVorname());
                 System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
-                System.out.println("print test");
+                System.out.println("-- TEST --");
                 System.out.println(temp.getKunde().getLaendercode());
                 System.out.println(temp.getIban());
                 System.out.println(temp.getKontostand());
