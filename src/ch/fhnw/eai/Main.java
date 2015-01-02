@@ -49,8 +49,6 @@ public class Main {
                 System.out.println(temp.getKunde().getVorname());
                 System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
-                System.out.println("-- TEST No 1 --");
-                System.out.println("-- TEST No 2 --");
                 System.out.println(temp.getKunde().getLaendercode());
                 System.out.println(temp.getIban());
                 System.out.println(temp.getKontostand());
