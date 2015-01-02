@@ -140,6 +140,13 @@ public class Integrator {
             //adresse generieren
             dbKunde.adresse = dbKundeFromIterator.strassenname +", " + dbKundeFromIterator.plz +" " + dbKundeFromIterator.stadt;
             
+            //laendercode
+            if(dbKundeFromIterator.land.equals("Schweiz") || dbKundeFromIterator.land.equals("Switzerland")){
+                dbKunde.laendercode = "CH";
+                
+            }
+            
+            //dbKunde.status=
             DBkonto.add(dbKonto);
         }
         return DBkonto; 

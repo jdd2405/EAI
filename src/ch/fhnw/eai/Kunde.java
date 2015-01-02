@@ -15,7 +15,7 @@ public class Kunde {
     public String vorname;
     public String nachname;
     public String adresse;
-    public char laendercode;
+    public String laendercode;
     public String status;
 
     public Kunde(){
@@ -27,7 +27,7 @@ public class Kunde {
         this.nachname = nachname;
     }
 
-    public Kunde(int kid, String vorname, String nachname, String adresse, char laendercode, String status) {
+    public Kunde(int kid, String vorname, String nachname, String adresse, String laendercode, String status) {
         this.kid = kid;
         this.vorname = vorname;
         this.nachname = nachname;
@@ -68,11 +68,11 @@ public class Kunde {
         this.adresse = adresse;
     }
 
-    public char getLaendercode() {
+    public String getLaendercode() {
         return laendercode;
     }
 
-    public void setLaendercode(char laendercode) {
+    public void setLaendercode(String laendercode) {
         this.laendercode = laendercode;
     }
 
