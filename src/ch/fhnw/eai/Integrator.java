@@ -153,6 +153,8 @@ public class Integrator {
             
             //Kontostand
             dbKonto.setKontostand(dbKundeFromIterator.saldo);
+            dbKonto.setKontoart("not defined");
+            dbKonto.setIban(""+dbKundeFromIterator.kontonummer);
             System.out.println("test");
             
             //dbKunde.status=
