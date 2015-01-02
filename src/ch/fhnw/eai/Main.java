@@ -25,6 +25,12 @@ public class Main {
             integrator.extrahiereSparkonten();
             
             DBAccess db = new DBAccess();
+            ArrayList <DBDaten> DBdaten =db.readDataBase();
+            System.out.println("DBdaten reihe 1: " + DBdaten.get(5).kundenname);
+            ArrayList <Kunde> DBkunde = integrator.DBNamenTrennen(DBdaten);
+            ListIterator <Kunde> iterator = DBkunde.listIterator();
+            while (iterator.hasNext()){
+                System.out.println(iterator.next().vorname);
             db.readDataBase();
             
             ListIterator<Konto> iterator = integrator.konten.listIterator();
