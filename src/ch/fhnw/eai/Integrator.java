@@ -74,7 +74,7 @@ public class Integrator {
             kunde.setAdresse(strasse.value+", "+plzOrt.value);
             Konto konto = new Konto(kunde);
             konto.setKontostand(kontostand.value);
-            konto.setIban(""+kontonummer.value);
+            konto.setIban(ibanErstellung(kontonummer.value, 0));
             if(pruefeEindeutigkeit(kunde)){
                 // To Do: Vergleichen
                 konten.add(konto);
@@ -166,7 +166,7 @@ public class Integrator {
             dbKonto.setKontostand(dbKundeFromIterator.saldo);
             dbKonto.setKontoart("not defined kontoart");
             dbKonto.getKunde().setStatus("not defined status");
-            dbKonto.setIban(""+dbKundeFromIterator.kontonummer);
+            dbKonto.setIban(ibanErstellung(dbKundeFromIterator.kontonummer, dbKundeFromIterator.clearing));
             
             //dbKunde.status=
             DBkonto.add(dbKonto);
@@ -174,6 +174,7 @@ public class Integrator {
         return DBkonto; 
     }
     
+    //Methode für die Gross- und Kleinschriebung
     static public String firstLetterCaps ( String data ){
         if (data.equals("van")||data.equals("von")){
             return data.toLowerCase();
@@ -183,6 +184,39 @@ public class Integrator {
             String restLetters = data.substring(1).toLowerCase();
             return firstLetter + restLetters;
         }    
+    }
+    
+    //Methode für die Erstellung einer IBAN-Nummer
+    static public String ibanErstellung(long kontonummerLONG, int clearingINT){
+        String ibannummer;
+        String pruefzifferInText;
+        int chInZahlen = 1217;
+        String kontonummer = String.valueOf(kontonummerLONG);
+        String clearing = String.valueOf(clearingINT);
+        //Kontonummer auf 12 Stellen verlängern wenn nötig
+        while (kontonummer.length()<12){
+            kontonummer ="0" +kontonummer;
+        }
+        //clearing definieren oder bereinigen
+        if (clearingINT == 0){
+            clearing = "00240";
+        }
+        else{
+            while (clearing.length()<5){
+                clearing = "0" + clearing;
+            }
+        }
+        //pruefziffer muss 2stellig sein
+        long pruefziffer = (Integer.parseInt(clearing) + Long.parseLong(kontonummer) +  chInZahlen + 00)%97;
+        if (pruefziffer <10){
+            pruefzifferInText = "0"+pruefziffer;
+        }
+        else{
+            pruefzifferInText = String.valueOf(pruefziffer);
+        }
+        //zusammensetzung zum Endresultat
+        ibannummer = "CH" + pruefzifferInText + clearing + kontonummer;
+        return ibannummer;
     }
 
     
