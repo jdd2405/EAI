@@ -102,8 +102,9 @@ public class Integrator {
         
         ListIterator<DBDaten> iterator2 = DBdaten.listIterator();
         while (iterator2.hasNext()){
+            DBDaten dbKundeFromIterator = iterator2.next();
             //name und vorname trennen
-            String kundenname = iterator2.next().kundenname;
+            String kundenname = dbKundeFromIterator.kundenname;
             String [] name = kundenname.split("\\s+");
             Kunde dbKunde = new Kunde();
             if (name.length == 2){
@@ -118,6 +119,9 @@ public class Integrator {
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1]+ " " + name[2]; 
             }
+            
+            //adresse generieren
+            dbKunde.adresse = dbKundeFromIterator.strassenname +", ";
             
             DBkunde.add(dbKunde);
         }
