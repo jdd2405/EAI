@@ -57,9 +57,6 @@ public class DBAccess {
                 dbKunde.clearing = rs.getInt(10);
                
                 DBdaten.add(dbKunde);
-                System.out.print(rs.getInt(1));
-                System.out.print(": ");
-                System.out.println(rs.getString(2));
             }
             return DBdaten;
         } catch (SQLException ex) {

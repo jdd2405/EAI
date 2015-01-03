@@ -27,41 +27,28 @@ public class Main {
             
             DBAccess db = new DBAccess();
             ArrayList <DBDaten> DBdaten =db.readDataBase();
-            ArrayList <Konto> DBkunde = integrator.DBDatenFormatieren(DBdaten);
+            integrator.DBDatenFormatieren(DBdaten);
             
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");
             
-            ListIterator<Konto> iterator2 = integrator.konten.listIterator();
-            while(iterator2.hasNext()){
-                Konto temp = iterator2.next();
-                System.out.println(temp.getKunde().getVorname() + temp.getKunde().getNachname());
-                System.out.println(temp.getKunde().getAdresse());
-                System.out.println(temp.getIban());
-                System.out.println(temp.getKontostand());
-                System.out.println("******************");
-            }
-            
-            System.out.println("");
-            System.out.println("Datenbank Kunden");
-            System.out.println("******************");
-            System.out.println("");
-            
-            
-            ListIterator<Konto> iterator3 = DBkunde.listIterator();
-            while(iterator3.hasNext()){
-                Konto temp = iterator3.next();
+            ListIterator<Konto> iterator = integrator.konten.listIterator();
+            while(iterator.hasNext()){
+                Konto temp = iterator.next();
+                System.out.println(temp.getKunde().getKid());
                 System.out.println(temp.getKunde().getVorname());
                 System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
                 System.out.println(temp.getKunde().getLaendercode());
                 System.out.println(temp.getKunde().getStatus());
+                System.out.println("***");
+                System.out.println(temp.getKunde().getKid());
                 System.out.println(temp.getIban());
                 System.out.println(f.format(temp.getKontostand()));
                 System.out.println(temp.getKontoart());
                 System.out.println("******************");
             }
-            
+          
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

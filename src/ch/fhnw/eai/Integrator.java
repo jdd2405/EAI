@@ -21,6 +21,8 @@ public class Integrator {
     // Nur geprüfte Objekte kommen in die Liste
     public ArrayList<Kunde> kunden;
     public ArrayList<Konto> konten;
+    
+    Kunde eindeutigerKunde;
 
     
     public Integrator() {
@@ -75,11 +77,14 @@ public class Integrator {
             Konto konto = new Konto(kunde);
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanErstellung(kontonummer.value, 0));
-            if(pruefeEindeutigkeit(kunde)){
-                // To Do: Vergleichen
+            
+            eindeutigerKunde = pruefeEindeutigkeit(kunde);
+            if(eindeutigerKunde != null){
+                konto.setKunde(eindeutigerKunde);
                 konten.add(konto);
             }
             else {
+                kunde.setKid(kunden.size()+1);
                 kunden.add(kunde);
                 konten.add(konto);
             }
@@ -91,24 +96,23 @@ public class Integrator {
     
     
     
-    public boolean pruefeEindeutigkeit(Kunde kunde){
-        boolean istEindeutig = false;
+    public Kunde pruefeEindeutigkeit(Kunde kunde){
+        Kunde returnKunde = null;
         ListIterator<Kunde> iterator = kunden.listIterator();
         while(iterator.hasNext()){
             Kunde temp = iterator.next();
-            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)){
-                istEindeutig = true;
+            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)/*&&temp.adresse.equals(kunde.adresse)*/){
+                  // To Do: Vergleichen  
+                    
+                returnKunde = temp;
             }
         }
-        
-        return istEindeutig;
+        return returnKunde;
     }
     
-    public ArrayList<Konto> DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
-        ArrayList <Konto> DBkonto = new ArrayList <Konto>();
+    public void DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
         ListIterator<DBDaten> iterator1 = DBdaten.listIterator();
-        
-        
+
         //Firma aus arraylist löschen
         while(iterator1.hasNext()){
             if (iterator1.next().kundenart.equals("Firma")){
@@ -119,6 +123,7 @@ public class Integrator {
         ListIterator<DBDaten> iterator2 = DBdaten.listIterator();
         while (iterator2.hasNext()){
             DBDaten dbKundeFromIterator = iterator2.next();
+            
             //name und vorname trennen
             String kundenname = dbKundeFromIterator.kundenname;
             String [] name = kundenname.split("\\s+");
@@ -127,8 +132,7 @@ public class Integrator {
             for (int i =0; i < name.length; i++){
                 name[i]=firstLetterCaps(name[i]);
             }
-            
-            
+                        
             Kunde dbKunde = new Kunde();
             Konto dbKonto = new Konto(dbKunde);
             if (name.length == 2){
@@ -161,17 +165,27 @@ public class Integrator {
             else if(dbKundeFromIterator.land.equals("The Netherlands")){
                 dbKunde.laendercode = "NL";
             }
-            
+            //Status
+            dbKonto.getKunde().setStatus("not defined status");
             //Kontostand
             dbKonto.setKontostand(dbKundeFromIterator.saldo);
-            dbKonto.setKontoart("not defined kontoart");
-            dbKonto.getKunde().setStatus("not defined status");
+            //Kontoart
+            dbKonto.setKontoart("Kontokorrent");
+            //IBAN-Nummer
             dbKonto.setIban(ibanErstellung(dbKundeFromIterator.kontonummer, dbKundeFromIterator.clearing));
             
-            //dbKunde.status=
-            DBkonto.add(dbKonto);
+            //Eindeutigkeit prüfen
+            eindeutigerKunde = pruefeEindeutigkeit(dbKunde);
+            if(eindeutigerKunde != null){
+                dbKonto.setKunde(eindeutigerKunde);
+                konten.add(dbKonto);
+            }
+            else {
+                dbKunde.setKid(kunden.size()+1);
+                kunden.add(dbKunde);
+                konten.add(dbKonto);
+            }
         }
-        return DBkonto; 
     }
     
     //Methode für die Gross- und Kleinschriebung
