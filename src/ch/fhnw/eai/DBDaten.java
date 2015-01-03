@@ -19,12 +19,6 @@ public class DBDaten {
     public long kontonummer;
     public double saldo;
     public int clearing;
-
-    public DBDaten() {
-        
-    }
-    
-    
-    
+     
     
 }
