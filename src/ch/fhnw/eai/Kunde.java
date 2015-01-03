@@ -22,6 +22,9 @@ public class Kunde {
         this.vorname = vorname;
         this.nachname = nachname;
     }
+    public Kunde(){
+        
+    }
     
     
     
