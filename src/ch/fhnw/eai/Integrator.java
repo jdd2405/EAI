@@ -104,8 +104,7 @@ public class Integrator {
         return istEindeutig;
     }
     
-    public ArrayList<Kunde> DBNamenTrennen(ArrayList <DBDaten> DBdaten){
-        ArrayList <Kunde> DBkunde = new ArrayList <Kunde>();
+    public ArrayList<Konto> DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
         ArrayList <Konto> DBkonto = new ArrayList <Konto>();
         ListIterator<DBDaten> iterator1 = DBdaten.listIterator();
         
@@ -124,6 +123,7 @@ public class Integrator {
             String kundenname = dbKundeFromIterator.kundenname;
             String [] name = kundenname.split("\\s+");
             Kunde dbKunde = new Kunde();
+            Konto dbKonto = new Konto(dbKunde);
             if (name.length == 2){
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1];
@@ -138,11 +138,11 @@ public class Integrator {
             }
             
             //adresse generieren
-            dbKunde.adresse = dbKundeFromIterator.strassenname +", ";
+            dbKunde.adresse = dbKundeFromIterator.strassenname +", " + dbKundeFromIterator.plz +" " + dbKundeFromIterator.stadt;
             
-            DBkunde.add(dbKunde);
+            DBkonto.add(dbKonto);
         }
-        return DBkunde; 
+        return DBkonto; 
     }
     
     

@@ -26,17 +26,28 @@ public class Main {
             
             DBAccess db = new DBAccess();
             ArrayList <DBDaten> DBdaten =db.readDataBase();
-            System.out.println("DBdaten reihe 1: " + DBdaten.get(5).kundenname);
-            ArrayList <Kunde> DBkunde = integrator.DBNamenTrennen(DBdaten);
-            ListIterator <Kunde> iterator = DBkunde.listIterator();
-            while (iterator.hasNext()){
-                System.out.println(iterator.next().vorname);
-            }
+            ArrayList <Konto> DBkunde = integrator.DBDatenFormatieren(DBdaten);
             
             ListIterator<Konto> iterator2 = integrator.konten.listIterator();
             while(iterator2.hasNext()){
                 Konto temp = iterator2.next();
                 System.out.println(temp.getKunde().getVorname() + temp.getKunde().getNachname());
+                System.out.println(temp.getKunde().getAdresse());
+                System.out.println(temp.getIban());
+                System.out.println(temp.getKontostand());
+                System.out.println("******************");
+            }
+            
+            System.out.println("");
+            System.out.println("Datenbank Kunden");
+            System.out.println("******************");
+            System.out.println("");
+            
+            ListIterator<Konto> iterator3 = DBkunde.listIterator();
+            while(iterator3.hasNext()){
+                Konto temp = iterator3.next();
+                System.out.println(temp.getKunde().getVorname());
+                System.out.println(temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
                 System.out.println(temp.getIban());
                 System.out.println(temp.getKontostand());
