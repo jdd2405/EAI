@@ -122,6 +122,13 @@ public class Integrator {
             //name und vorname trennen
             String kundenname = dbKundeFromIterator.kundenname;
             String [] name = kundenname.split("\\s+");
+            
+            //Gross- und Kleinschriebung bereinigen
+            for (int i =0; i < name.length; i++){
+                name[i]=firstLetterCaps(name[i]);
+            }
+            
+            
             Kunde dbKunde = new Kunde();
             Konto dbKonto = new Konto(dbKunde);
             if (name.length == 2){
@@ -140,13 +147,6 @@ public class Integrator {
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1]+ " " + name[2]; 
             }
-            if (dbKunde.nachname.equals("HINKELMANN")){
-                String nachnameGrossKlein = dbKunde.nachname;
-                nachnameGrossKlein = nachnameGrossKlein.toLowerCase();
-                nachnameGrossKlein = nachnameGrossKlein.substring(0,1).toUpperCase() + nachnameGrossKlein.substring(1);
-                dbKunde.nachname = nachnameGrossKlein;
-            }
-            
             
             //adresse generieren
             dbKunde.adresse = dbKundeFromIterator.strassenname +", " + dbKundeFromIterator.plz +" " + dbKundeFromIterator.stadt;
@@ -173,6 +173,20 @@ public class Integrator {
         }
         return DBkonto; 
     }
+    
+    static public String firstLetterCaps ( String data ){
+        if (data.equals("van")||data.equals("von")){
+            return data.toLowerCase();
+        }
+        else{
+            String firstLetter = data.substring(0,1).toUpperCase();
+            String restLetters = data.substring(1).toLowerCase();
+            return firstLetter + restLetters;
+        }    
+    }
+
+    
+    
     
     
 }
