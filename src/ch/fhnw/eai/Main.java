@@ -24,10 +24,6 @@ public class Main {
             integrator.extrahiereKontokorrente();
             integrator.extrahiereSparkonten();
             
-            printKontokorrent();
-            printSparkonto();
-            System.out.println("Kontokorrent: "+listeKontokorrentNachname());
-            System.out.println("Sparkontos: "+ listeSparkontoNachname());
             DBAccess db = new DBAccess();
             ArrayList <DBDaten> DBdaten =db.readDataBase();
             System.out.println("DBdaten reihe 1: " + DBdaten.get(5).kundenname);
@@ -35,6 +31,16 @@ public class Main {
             ListIterator <Kunde> iterator = DBkunde.listIterator();
             while (iterator.hasNext()){
                 System.out.println(iterator.next().vorname);
+            db.readDataBase();
+            
+            ListIterator<Konto> iterator = integrator.konten.listIterator();
+            while(iterator.hasNext()){
+                Konto temp = iterator.next();
+                System.out.println(temp.getKunde().getVorname() + temp.getKunde().getNachname());
+                System.out.println(temp.getKunde().getAdresse());
+                System.out.println(temp.getIban());
+                System.out.println(temp.getKontostand());
+                System.out.println("******************");
             }
             
         } catch (Exception ex) {
