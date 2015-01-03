@@ -31,11 +31,11 @@ public class Main {
             ListIterator <Kunde> iterator = DBkunde.listIterator();
             while (iterator.hasNext()){
                 System.out.println(iterator.next().vorname);
-            db.readDataBase();
+            }
             
-            ListIterator<Konto> iterator = integrator.konten.listIterator();
-            while(iterator.hasNext()){
-                Konto temp = iterator.next();
+            ListIterator<Konto> iterator2 = integrator.konten.listIterator();
+            while(iterator2.hasNext()){
+                Konto temp = iterator2.next();
                 System.out.println(temp.getKunde().getVorname() + temp.getKunde().getNachname());
                 System.out.println(temp.getKunde().getAdresse());
                 System.out.println(temp.getIban());
