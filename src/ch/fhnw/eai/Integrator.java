@@ -58,13 +58,34 @@ public class Integrator {
         Holder<String> ibanKontonummer = new Holder();
         Holder<Float> kontostand = new Holder();
         Holder<String> bic = new Holder();
-        
+        System.out.println("********************");
+        System.out.println("Kontokorrent BankJD");
+        System.out.println("********************");
+            
         ListIterator<String> iterator = ws.listeKontokorrentNachname().listIterator();
         while (iterator.hasNext()){
             queryNachname = iterator.next();
             queryVorname = null;
             ws.holeKontoKorrent(queryVorname, queryNachname, vorname, nachname, adresse, land, ranking, ibanKontonummer, kontostand, bic);
+            
             System.out.println("Resultat für '"+queryNachname+"' : "+vorname.value+", "+nachname.value+", "+adresse.value+", "+land.value+", "+ranking.value+", "+ibanKontonummer.value+", "+kontostand.value+", "+bic.value);
+            
+            Kunde kunde = new Kunde(vorname.value, nachname.value);
+            kunde.setAdresse(adresse.value);
+            Konto konto = new Konto(kunde);
+            konto.setKontostand(kontostand.value);
+            konto.setIban(ibanKontonummer.value);
+            
+            eindeutigerKunde = pruefeEindeutigkeit(kunde);
+            if(eindeutigerKunde != null){
+                konto.setKunde(eindeutigerKunde);
+                konten.add(konto);
+            }
+            else {
+                kunde.setKid(kunden.size()+1);
+                kunden.add(kunde);
+                konten.add(konto);
+            }
         } 
     }
     
@@ -78,12 +99,15 @@ public class Integrator {
         Holder<Float> zinsen = new Holder();
         Holder<Long> kontonummer = new Holder();
         Holder<Long> kontostand = new Holder();
-        
+        System.out.println("********************");
+        System.out.println("Sparkonto BankJD");
+        System.out.println("********************");
         ListIterator<String> iterator = ws.listeSparkontoNachname().listIterator();
         while (iterator.hasNext()){
             queryNachname = iterator.next();
             queryVorname = null;
             ws.holeSparkonto(queryVorname, queryNachname, vorname, nachname, strasse, plzOrt, zinsen, kontonummer, kontostand);
+            
             System.out.println("Resultat für '"+queryNachname+"' : "+vorname.value+", "+nachname.value+", "+strasse.value+", "+plzOrt.value+", "+zinsen.value+", "+kontonummer.value+", "+kontostand.value);
             
             Kunde kunde = new Kunde(vorname.value, nachname.value);
