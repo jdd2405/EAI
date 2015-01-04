@@ -28,7 +28,7 @@ public class Integrator {
     
     //Objekte die eine Ähnlichkeit der Stufe 2 aufweisen
     public ArrayList<Kunde> kundenAehnlichkeit2;
-    public ArrayList<Konto> kontenAehnlickheit2;
+    public ArrayList<Konto> kontenAehnlichkeit2;
     
     
     Kunde eindeutigerKunde;
@@ -44,7 +44,7 @@ public class Integrator {
         kundenAehnlichkeit1 = new ArrayList<Kunde>();
         kontenAehnlichkeit1 = new ArrayList<Konto>();
         kundenAehnlichkeit2 = new ArrayList<Kunde>();
-        kontenAehnlickheit2 = new ArrayList<Konto>();
+        kontenAehnlichkeit2 = new ArrayList<Konto>();
     }
     
     public void extrahiereKontokorrente(){
@@ -76,7 +76,7 @@ public class Integrator {
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanKontonummer.value);
             
-            eindeutigerKunde = pruefeEindeutigkeit(kunde);
+            eindeutigerKunde = pruefeEindeutigkeit(kunde, kunden);
             if(eindeutigerKunde != null){
                 konto.setKunde(eindeutigerKunde);
                 konten.add(konto);
@@ -116,7 +116,7 @@ public class Integrator {
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanErstellung(kontonummer.value, 0));
             
-            eindeutigerKunde = pruefeEindeutigkeit(kunde);
+            eindeutigerKunde = pruefeEindeutigkeit(kunde, kunden);
             if(eindeutigerKunde != null){
                 konto.setKunde(eindeutigerKunde);
                 konten.add(konto);
@@ -134,10 +134,10 @@ public class Integrator {
     
     
     
-    public Kunde pruefeEindeutigkeit(Kunde kunde){
+    public Kunde pruefeEindeutigkeit(Kunde kunde, ArrayList<Kunde> durchsuchungsliste){
         Kunde returnKunde = null;
         
-        ListIterator<Kunde> iterator = kunden.listIterator();
+        ListIterator<Kunde> iterator = durchsuchungsliste.listIterator();
         while(iterator.hasNext()){
             Kunde temp = iterator.next();
             //Eindeutigkeit
@@ -148,6 +148,10 @@ public class Integrator {
         return returnKunde;
     }
     
+    
+    
+    
+    
     public int pruefeAehnlichkeit(Kunde kunde){
         
         ListIterator<Kunde> iterator = kunden.listIterator();
@@ -157,7 +161,9 @@ public class Integrator {
             //erste Aehnlichkeitsueberpruefung
             String [] trenneAdresse =kunde.getAdresse().split(", ");
             String [] trennePlzOrt = trenneAdresse[1].split("\\s+");
-            if(tempKunde.vorname.equals(kunde.vorname)&&tempKunde.nachname.equals(kunde.nachname)&&tempKunde.adresse.contains(trennePlzOrt[0])){
+            String nachnameOhneUmlaut = kunde.nachname.replace("ü", "ue");
+            String nachnameMitUmlaut = kunde.nachname.replace("ue", "ü");
+            if(tempKunde.vorname.equals(kunde.vorname)&&(tempKunde.nachname.equals(nachnameOhneUmlaut)||tempKunde.nachname.equals(nachnameMitUmlaut))&&tempKunde.adresse.contains(trennePlzOrt[0])){
                kundenAehnlichkeit1.add(tempKunde);
                ListIterator<Konto> iterator2 = konten.listIterator();
                while(iterator2.hasNext()){
@@ -241,13 +247,22 @@ public class Integrator {
             dbKonto.setIban(ibanErstellung(dbKundeFromIterator.kontonummer, dbKundeFromIterator.clearing));
             
             //Eindeutigkeit prüfen
-            eindeutigerKunde = pruefeEindeutigkeit(dbKunde);
+            eindeutigerKunde = pruefeEindeutigkeit(dbKunde, kunden);
             if(eindeutigerKunde != null){
                 dbKonto.setKunde(eindeutigerKunde);
                 konten.add(dbKonto);
             }
+            else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit1) != null){
+                dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit1));
+                kontenAehnlichkeit1.add(dbKonto);
+            }
+            else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit2) != null){
+                dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit2));
+                kontenAehnlichkeit2.add(dbKonto);
+            }
+            
+            //Aehnlichkeit prüfen
             else {
-                //Aehnlichkeit prüfen
                 aehnlicherKunde = pruefeAehnlichkeit(dbKunde);
                 if (aehnlicherKunde==0){
                     dbKunde.setKid(kunden.size()+1);
@@ -260,7 +275,7 @@ public class Integrator {
                 }
                 else{
                     kundenAehnlichkeit2.add(dbKunde);
-                    kontenAehnlickheit2.add(dbKonto);
+                    kontenAehnlichkeit2.add(dbKonto);
                 }
             }
         }

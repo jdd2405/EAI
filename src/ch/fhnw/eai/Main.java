@@ -76,7 +76,7 @@ public class Main {
             System.out.println("Konten die eine Ähnlichkeit der Stufe 2 aufweisen");
             System.out.println("");
             
-            ListIterator<Konto> iterator3 = integrator.kontenAehnlickheit2.listIterator();
+            ListIterator<Konto> iterator3 = integrator.kontenAehnlichkeit2.listIterator();
             while(iterator3.hasNext()){
                 Konto temp = iterator3.next();
                 System.out.println(temp.getKunde().getKid());
