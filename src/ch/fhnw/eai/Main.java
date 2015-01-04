@@ -52,10 +52,10 @@ public class Main {
             }
             
             System.out.println("");
-            System.out.println("Konten die eine Ähnlichkeit der Stufe 1 aufweisen");
+            System.out.println("Konten die eine Ähnlichkeit aufweisen");
             System.out.println("");
             
-            ListIterator<Konto> iterator2 = integrator.kontenAehnlichkeit1.listIterator();
+            ListIterator<Konto> iterator2 = integrator.kontenAehnlichkeit.listIterator();
             while(iterator2.hasNext()){
                 Konto temp = iterator2.next();
                 System.out.println(temp.getKunde().getKid());
@@ -71,27 +71,7 @@ public class Main {
                 System.out.println(temp.getKontoart());
                 System.out.println("******************");
             }
-            
-            System.out.println("");
-            System.out.println("Konten die eine Ähnlichkeit der Stufe 2 aufweisen");
-            System.out.println("");
-            
-            ListIterator<Konto> iterator3 = integrator.kontenAehnlichkeit2.listIterator();
-            while(iterator3.hasNext()){
-                Konto temp = iterator3.next();
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getKunde().getVorname());
-                System.out.println(temp.getKunde().getNachname());
-                System.out.println(temp.getKunde().getAdresse());
-                System.out.println(temp.getKunde().getLaendercode());
-                System.out.println(temp.getKunde().getStatus());
-                System.out.println("***");
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getIban());
-                System.out.println(f.format(temp.getKontostand()));
-                System.out.println(temp.getKontoart());
-                System.out.println("******************");
-            }
+
           
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

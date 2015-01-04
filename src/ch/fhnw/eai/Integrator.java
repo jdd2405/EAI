@@ -22,13 +22,10 @@ public class Integrator {
     public ArrayList<Kunde> kunden;
     public ArrayList<Konto> konten;
     
-    //Objekte die eine Ähnlichkeit der Stufe 1 aufweisen
-    public ArrayList<Kunde> kundenAehnlichkeit1;
-    public ArrayList<Konto> kontenAehnlichkeit1;
-    
-    //Objekte die eine Ähnlichkeit der Stufe 2 aufweisen
-    public ArrayList<Kunde> kundenAehnlichkeit2;
-    public ArrayList<Konto> kontenAehnlichkeit2;
+    //Objekte die eine Ähnlichkeit aufweisen
+    public ArrayList<Kunde> kundenAehnlichkeit;
+    public ArrayList<Konto> kontenAehnlichkeit;
+
     
     
     Kunde eindeutigerKunde;
@@ -41,10 +38,9 @@ public class Integrator {
         
         kunden = new ArrayList<Kunde>();
         konten = new ArrayList<Konto>();
-        kundenAehnlichkeit1 = new ArrayList<Kunde>();
-        kontenAehnlichkeit1 = new ArrayList<Konto>();
-        kundenAehnlichkeit2 = new ArrayList<Kunde>();
-        kontenAehnlichkeit2 = new ArrayList<Konto>();
+        kundenAehnlichkeit = new ArrayList<Kunde>();
+        kontenAehnlichkeit = new ArrayList<Konto>();
+
     }
     
     public void extrahiereKontokorrente(){
@@ -76,16 +72,51 @@ public class Integrator {
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanKontonummer.value);
             
+            //Eindeutigkeit prüfen
             eindeutigerKunde = pruefeEindeutigkeit(kunde, kunden);
             if(eindeutigerKunde != null){
                 konto.setKunde(eindeutigerKunde);
                 konten.add(konto);
             }
-            else {
-                kunde.setKid(kunden.size()+1);
-                kunden.add(kunde);
-                konten.add(konto);
+            else if(pruefeEindeutigkeit(kunde, kundenAehnlichkeit) != null){
+                konto.setKunde(pruefeEindeutigkeit(kunde, kundenAehnlichkeit));
+                kontenAehnlichkeit.add(konto);
             }
+            //Aehnlichkeit prüfen
+            else {
+                aehnlichesKonto1 = pruefeAehnlichkeit1(kunde, konten);
+                if (aehnlichesKonto1==null){
+                    if(pruefeAehnlichkeit1(kunde, kontenAehnlichkeit)==null){
+                        if(pruefeAehnlichkeit2(kunde, konten)==null){
+                            if(pruefeAehnlichkeit2(kunde, kontenAehnlichkeit)==null){
+                                kunde.setKid(kunden.size()+1);
+                                kunden.add(kunde);
+                                konten.add(konto);
+                            }
+                            else{
+                                kundenAehnlichkeit.add(kunde);
+                                kontenAehnlichkeit.add(konto);
+                            }
+                        }
+                        else{
+                            Konto temp= (pruefeAehnlichkeit2(kunde, konten));
+                            kunden.remove(temp.getKunde());konten.remove(temp);
+                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
+                            kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                        }
+                    }
+                    else{
+                        kundenAehnlichkeit.add(kunde);
+                        kontenAehnlichkeit.add(konto);
+                    }
+                }
+                else{
+                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                }
+            }
+            
         } 
     }
     
@@ -116,16 +147,51 @@ public class Integrator {
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanErstellung(kontonummer.value, 0));
             
+            //Eindeutigkeit prüfen
             eindeutigerKunde = pruefeEindeutigkeit(kunde, kunden);
             if(eindeutigerKunde != null){
                 konto.setKunde(eindeutigerKunde);
                 konten.add(konto);
             }
-            else {
-                kunde.setKid(kunden.size()+1);
-                kunden.add(kunde);
-                konten.add(konto);
+            else if(pruefeEindeutigkeit(kunde, kundenAehnlichkeit) != null){
+                konto.setKunde(pruefeEindeutigkeit(kunde, kundenAehnlichkeit));
+                kontenAehnlichkeit.add(konto);
             }
+            //Aehnlichkeit prüfen
+            else {
+                aehnlichesKonto1 = pruefeAehnlichkeit1(kunde, konten);
+                if (aehnlichesKonto1==null){
+                    if(pruefeAehnlichkeit1(kunde, kontenAehnlichkeit)==null){
+                        if(pruefeAehnlichkeit2(kunde, konten)==null){
+                            if(pruefeAehnlichkeit2(kunde, kontenAehnlichkeit)==null){
+                                kunde.setKid(kunden.size()+1);
+                                kunden.add(kunde);
+                                konten.add(konto);
+                            }
+                            else{
+                                kundenAehnlichkeit.add(kunde);
+                                kontenAehnlichkeit.add(konto);
+                            }
+                        }
+                        else{
+                            Konto temp= (pruefeAehnlichkeit2(kunde, konten));
+                            kunden.remove(temp.getKunde());konten.remove(temp);
+                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
+                            kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                        }
+                    }
+                    else{
+                        kundenAehnlichkeit.add(kunde);
+                        kontenAehnlichkeit.add(konto);
+                    }
+                }
+                else{
+                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                }
+            }
+            
             
             
             
@@ -134,59 +200,7 @@ public class Integrator {
     
     
     
-    public Kunde pruefeEindeutigkeit(Kunde kunde, ArrayList<Kunde> durchsuchungsliste){
-        Kunde returnKunde = null;
-        
-        ListIterator<Kunde> iterator = durchsuchungsliste.listIterator();
-        while(iterator.hasNext()){
-            Kunde temp = iterator.next();
-            //Eindeutigkeit
-            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)&&temp.adresse.equals(kunde.adresse)){                    
-                returnKunde = temp;
-            }
-        }
-        return returnKunde;
-    }
     
-    
-    
-    
-    
-    public Konto pruefeAehnlichkeit1(Kunde kunde){
-        ListIterator<Konto> iterator = konten.listIterator();
-        while(iterator.hasNext()){
-            Konto tempKonto = iterator.next();
-        
-            //erste Aehnlichkeitsueberpruefung
-            String [] trenneAdresse =kunde.getAdresse().split(", ");
-            String [] trennePlzOrt = trenneAdresse[1].split("\\s+");
-            String nachnameOhneUmlaut = kunde.nachname.replace("ü", "ue");
-            String nachnameMitUmlaut = kunde.nachname.replace("ue", "ü");
-            if(tempKonto.getKunde().vorname.equals(kunde.vorname)&&(tempKonto.getKunde().nachname.equals(nachnameOhneUmlaut)||tempKonto.getKunde().nachname.equals(nachnameMitUmlaut))&&tempKonto.getKunde().adresse.contains(trennePlzOrt[0])){
-               //kunden.remove(tempKunde);
-               //kundenAehnlichkeit1.add(tempKunde);
-               
-               return tempKonto; 
-            }
-        }
-        return null;
-    }
-    
-    public Konto pruefeAehnlichkeit2(Kunde kunde) {
-        ListIterator<Konto> iterator = konten.listIterator();
-        while(iterator.hasNext()){
-            Konto tempKonto = iterator.next();
-            //zweite Aehnlichkeitsueberpruefung
-            if(tempKonto.getKunde().adresse.equals(kunde.adresse)&&((kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().vorname) ||(kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().nachname))){
-               //kunden.remove(tempKunde);
-               //kundenAehnlichkeit2.add(tempKunde);
-               return tempKonto;
-               
-            }
-
-        }
-        return null;
-    }
     
     public void DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
         ListIterator<DBDaten> iterator1 = DBdaten.listIterator();
@@ -258,47 +272,100 @@ public class Integrator {
                 dbKonto.setKunde(eindeutigerKunde);
                 konten.add(dbKonto);
             }
-            else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit1) != null){
-                dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit1));
-                kontenAehnlichkeit1.add(dbKonto);
-            }
-            else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit2) != null){
-                dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit2));
-                kontenAehnlichkeit2.add(dbKonto);
+            else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit) != null){
+                dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit));
+                kontenAehnlichkeit.add(dbKonto);
             }
             
             //Aehnlichkeit prüfen
             else {
-                aehnlichesKonto1 = pruefeAehnlichkeit1(dbKunde);
+                aehnlichesKonto1 = pruefeAehnlichkeit1(dbKunde, konten);
                 if (aehnlichesKonto1==null){
-                    if (pruefeAehnlichkeit2(dbKunde)==null){
-                        dbKunde.setKid(kunden.size()+1);
-                        kunden.add(dbKunde);
-                        konten.add(dbKonto);
+                    if(pruefeAehnlichkeit1(dbKunde, kontenAehnlichkeit)==null){
+                        if(pruefeAehnlichkeit2(dbKunde, konten)==null){
+                            if(pruefeAehnlichkeit2(dbKunde, kontenAehnlichkeit)==null){
+                                dbKunde.setKid(kunden.size()+1);
+                                kunden.add(dbKunde);
+                                konten.add(dbKonto);
+                            }
+                            else{
+                                kundenAehnlichkeit.add(dbKunde);
+                                kontenAehnlichkeit.add(dbKonto);
+                            }
+                        }
+                        else{
+                            Konto temp= (pruefeAehnlichkeit2(dbKunde, konten));
+                            kunden.remove(temp.getKunde());konten.remove(temp);
+                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
+                            kundenAehnlichkeit.add(dbKunde);kontenAehnlichkeit.add(dbKonto);
+                        }
                     }
                     else{
-                        Konto aehnlichesKonto2 = pruefeAehnlichkeit2(dbKunde);
-                        kunden.remove(aehnlichesKonto2.getKunde());
-                        konten.remove(aehnlichesKonto2);
-                        kundenAehnlichkeit2.add(aehnlichesKonto2.getKunde());
-                        kontenAehnlichkeit2.add(aehnlichesKonto2);
-                        kundenAehnlichkeit2.add(dbKunde);
-                        kontenAehnlichkeit2.add(dbKonto);
-                        
+                        kundenAehnlichkeit.add(dbKunde);
+                        kontenAehnlichkeit.add(dbKonto);
                     }
-
                 }
                 else{
-                    kunden.remove(aehnlichesKonto1.getKunde());
-                    konten.remove(aehnlichesKonto1);
-                    kundenAehnlichkeit1.add(aehnlichesKonto1.getKunde());
-                    kontenAehnlichkeit1.add(aehnlichesKonto1);
-                    kundenAehnlichkeit1.add(dbKunde);
-                    kontenAehnlichkeit1.add(dbKonto);
-
+                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
+                    kundenAehnlichkeit.add(dbKunde);kontenAehnlichkeit.add(dbKonto);
                 }
             }
         }
+    }
+    
+    public Kunde pruefeEindeutigkeit(Kunde kunde, ArrayList<Kunde> durchsuchungsliste){
+        Kunde returnKunde = null;
+        
+        ListIterator<Kunde> iterator = durchsuchungsliste.listIterator();
+        while(iterator.hasNext()){
+            Kunde temp = iterator.next();
+            //Eindeutigkeit
+            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)&&temp.adresse.equals(kunde.adresse)){                    
+                returnKunde = temp;
+            }
+        }
+        return returnKunde;
+    }
+    
+    
+    
+    
+    
+    public Konto pruefeAehnlichkeit1(Kunde kunde, ArrayList<Konto> durchsuchungsliste){
+        ListIterator<Konto> iterator = durchsuchungsliste.listIterator();
+        while(iterator.hasNext()){
+            Konto tempKonto = iterator.next();
+        
+            //erste Aehnlichkeitsueberpruefung
+            String [] trenneAdresse =kunde.getAdresse().split(", ");
+            String [] trennePlzOrt = trenneAdresse[1].split("\\s+");
+            String nachnameOhneUmlaut = kunde.nachname.replace("ü", "ue");
+            String nachnameMitUmlaut = kunde.nachname.replace("ue", "ü");
+            if(tempKonto.getKunde().vorname.equals(kunde.vorname)&&(tempKonto.getKunde().nachname.equals(nachnameOhneUmlaut)||tempKonto.getKunde().nachname.equals(nachnameMitUmlaut))&&tempKonto.getKunde().adresse.contains(trennePlzOrt[0])){
+               //kunden.remove(tempKunde);
+               //kundenAehnlichkeit1.add(tempKunde);
+               
+               return tempKonto; 
+            }
+        }
+        return null;
+    }
+    
+    public Konto pruefeAehnlichkeit2(Kunde kunde, ArrayList<Konto> durchsuchungsliste) {
+        ListIterator<Konto> iterator = durchsuchungsliste.listIterator();
+        while(iterator.hasNext()){
+            Konto tempKonto = iterator.next();
+            //zweite Aehnlichkeitsueberpruefung
+            if(tempKonto.getKunde().adresse.equals(kunde.adresse)&&((kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().vorname) ||(kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().nachname))){
+               //kunden.remove(tempKunde);
+               //kundenAehnlichkeit2.add(tempKunde);
+               return tempKonto;
+               
+            }
+
+        }
+        return null;
     }
     
     
