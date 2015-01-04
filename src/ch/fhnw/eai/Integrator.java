@@ -22,7 +22,17 @@ public class Integrator {
     public ArrayList<Kunde> kunden;
     public ArrayList<Konto> konten;
     
+    //Objekte die eine Ähnlichkeit der Stufe 1 aufweisen
+    public ArrayList<Kunde> kundenAehnlichkeit1;
+    public ArrayList<Konto> kontenAehnlichkeit1;
+    
+    //Objekte die eine Ähnlichkeit der Stufe 2 aufweisen
+    public ArrayList<Kunde> kundenAehnlichkeit2;
+    public ArrayList<Konto> kontenAehnlickheit2;
+    
+    
     Kunde eindeutigerKunde;
+    int aehnlicherKunde;
 
     
     public Integrator() {
@@ -30,7 +40,11 @@ public class Integrator {
         ws = new WebServiceClient();
         
         kunden = new ArrayList<Kunde>();
-        konten = new ArrayList<Konto>();        
+        konten = new ArrayList<Konto>();
+        kundenAehnlichkeit1 = new ArrayList<Kunde>();
+        kontenAehnlichkeit1 = new ArrayList<Konto>();
+        kundenAehnlichkeit2 = new ArrayList<Kunde>();
+        kontenAehnlickheit2 = new ArrayList<Konto>();
     }
     
     public void extrahiereKontokorrente(){
@@ -98,16 +112,44 @@ public class Integrator {
     
     public Kunde pruefeEindeutigkeit(Kunde kunde){
         Kunde returnKunde = null;
+        
         ListIterator<Kunde> iterator = kunden.listIterator();
         while(iterator.hasNext()){
             Kunde temp = iterator.next();
-            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)/*&&temp.adresse.equals(kunde.adresse)*/){
-                  // To Do: Vergleichen  
-                    
+            //Eindeutigkeit
+            if(temp.vorname.equals(kunde.vorname)&&temp.nachname.equals(kunde.nachname)&&temp.adresse.equals(kunde.adresse)){                    
                 returnKunde = temp;
             }
         }
         return returnKunde;
+    }
+    
+    public int pruefeAehnlichkeit(Kunde kunde){
+        
+        ListIterator<Kunde> iterator = kunden.listIterator();
+        while(iterator.hasNext()){
+            Kunde tempKunde = iterator.next();
+        
+            //erste Aehnlichkeitsueberpruefung
+            String [] trenneAdresse =kunde.getAdresse().split(", ");
+            String [] trennePlzOrt = trenneAdresse[1].split("\\s+");
+            if(tempKunde.vorname.equals(kunde.vorname)&&tempKunde.nachname.equals(kunde.nachname)&&tempKunde.adresse.contains(trennePlzOrt[0])){
+               kundenAehnlichkeit1.add(tempKunde);
+               ListIterator<Konto> iterator2 = konten.listIterator();
+               while(iterator2.hasNext()){
+                   Konto tempKonto = iterator2.next();
+                   if(tempKonto.getKunde().equals(tempKunde)){
+                       kontenAehnlichkeit1.add(tempKonto);
+                   } 
+               }
+               return 1; 
+            }
+            //zweite Aehnlichkeitsueberpruefung
+            //if(){
+                
+            //}
+        }
+        return 0;
     }
     
     public void DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
@@ -181,9 +223,21 @@ public class Integrator {
                 konten.add(dbKonto);
             }
             else {
-                dbKunde.setKid(kunden.size()+1);
-                kunden.add(dbKunde);
-                konten.add(dbKonto);
+                //Aehnlichkeit prüfen
+                aehnlicherKunde = pruefeAehnlichkeit(dbKunde);
+                if (aehnlicherKunde==0){
+                    dbKunde.setKid(kunden.size()+1);
+                    kunden.add(dbKunde);
+                    konten.add(dbKonto);
+                }
+                else if(aehnlicherKunde==1){
+                    kundenAehnlichkeit1.add(dbKunde);
+                    kontenAehnlichkeit1.add(dbKonto);
+                }
+                else{
+                    kundenAehnlichkeit2.add(dbKunde);
+                    kontenAehnlickheit2.add(dbKonto);
+                }
             }
         }
     }
