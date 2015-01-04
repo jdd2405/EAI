@@ -68,6 +68,11 @@ public class Integrator {
             
             Kunde kunde = new Kunde(vorname.value, nachname.value);
             kunde.setAdresse(adresse.value);
+            // Quick and Dirty!
+            if(kunde.adresse.equals("Kastelgasse 31, 8001 ZH")){
+                kunde.setAdresse("Kastelgasse 31, 8001 Zürich");
+                System.out.println("Geändert zu: "+kunde.adresse);
+            }
             Konto konto = new Konto(kunde);
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanKontonummer.value);
@@ -141,8 +146,14 @@ public class Integrator {
             
             System.out.println("Resultat für '"+queryNachname+"' : "+vorname.value+", "+nachname.value+", "+strasse.value+", "+plzOrt.value+", "+zinsen.value+", "+kontonummer.value+", "+kontostand.value);
             
+            
             Kunde kunde = new Kunde(vorname.value, nachname.value);
             kunde.setAdresse(strasse.value+", "+plzOrt.value);
+            // Quick and Dirty!
+            if(kunde.adresse.equals("Riggenbachstrasse, , 4600 Olten")){
+                kunde.setAdresse("Riggenbachstrasse, 4600 Olten");
+                System.out.println("Geändert zu: "+kunde.adresse);
+            }
             Konto konto = new Konto(kunde);
             konto.setKontostand(kontostand.value);
             konto.setIban(ibanErstellung(kontonummer.value, 0));
