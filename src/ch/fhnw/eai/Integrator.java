@@ -32,7 +32,7 @@ public class Integrator {
     
     
     Kunde eindeutigerKunde;
-    int aehnlicherKunde;
+    Konto aehnlichesKonto1;
 
     
     public Integrator() {
@@ -152,34 +152,40 @@ public class Integrator {
     
     
     
-    public int pruefeAehnlichkeit(Kunde kunde){
-        
-        ListIterator<Kunde> iterator = kunden.listIterator();
+    public Konto pruefeAehnlichkeit1(Kunde kunde){
+        ListIterator<Konto> iterator = konten.listIterator();
         while(iterator.hasNext()){
-            Kunde tempKunde = iterator.next();
+            Konto tempKonto = iterator.next();
         
             //erste Aehnlichkeitsueberpruefung
             String [] trenneAdresse =kunde.getAdresse().split(", ");
             String [] trennePlzOrt = trenneAdresse[1].split("\\s+");
             String nachnameOhneUmlaut = kunde.nachname.replace("ü", "ue");
             String nachnameMitUmlaut = kunde.nachname.replace("ue", "ü");
-            if(tempKunde.vorname.equals(kunde.vorname)&&(tempKunde.nachname.equals(nachnameOhneUmlaut)||tempKunde.nachname.equals(nachnameMitUmlaut))&&tempKunde.adresse.contains(trennePlzOrt[0])){
-               kundenAehnlichkeit1.add(tempKunde);
-               ListIterator<Konto> iterator2 = konten.listIterator();
-               while(iterator2.hasNext()){
-                   Konto tempKonto = iterator2.next();
-                   if(tempKonto.getKunde().equals(tempKunde)){
-                       kontenAehnlichkeit1.add(tempKonto);
-                   } 
-               }
-               return 1; 
+            if(tempKonto.getKunde().vorname.equals(kunde.vorname)&&(tempKonto.getKunde().nachname.equals(nachnameOhneUmlaut)||tempKonto.getKunde().nachname.equals(nachnameMitUmlaut))&&tempKonto.getKunde().adresse.contains(trennePlzOrt[0])){
+               //kunden.remove(tempKunde);
+               //kundenAehnlichkeit1.add(tempKunde);
+               
+               return tempKonto; 
             }
-            //zweite Aehnlichkeitsueberpruefung
-            //if(){
-                
-            //}
         }
-        return 0;
+        return null;
+    }
+    
+    public Konto pruefeAehnlichkeit2(Kunde kunde) {
+        ListIterator<Konto> iterator = konten.listIterator();
+        while(iterator.hasNext()){
+            Konto tempKonto = iterator.next();
+            //zweite Aehnlichkeitsueberpruefung
+            if(tempKonto.getKunde().adresse.equals(kunde.adresse)&&((kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().vorname) ||(kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().nachname))){
+               //kunden.remove(tempKunde);
+               //kundenAehnlichkeit2.add(tempKunde);
+               return tempKonto;
+               
+            }
+
+        }
+        return null;
     }
     
     public void DBDatenFormatieren(ArrayList <DBDaten> DBdaten){
@@ -263,23 +269,38 @@ public class Integrator {
             
             //Aehnlichkeit prüfen
             else {
-                aehnlicherKunde = pruefeAehnlichkeit(dbKunde);
-                if (aehnlicherKunde==0){
-                    dbKunde.setKid(kunden.size()+1);
-                    kunden.add(dbKunde);
-                    konten.add(dbKonto);
-                }
-                else if(aehnlicherKunde==1){
-                    kundenAehnlichkeit1.add(dbKunde);
-                    kontenAehnlichkeit1.add(dbKonto);
+                aehnlichesKonto1 = pruefeAehnlichkeit1(dbKunde);
+                if (aehnlichesKonto1==null){
+                    if (pruefeAehnlichkeit2(dbKunde)==null){
+                        dbKunde.setKid(kunden.size()+1);
+                        kunden.add(dbKunde);
+                        konten.add(dbKonto);
+                    }
+                    else{
+                        Konto aehnlichesKonto2 = pruefeAehnlichkeit2(dbKunde);
+                        kunden.remove(aehnlichesKonto2.getKunde());
+                        konten.remove(aehnlichesKonto2);
+                        kundenAehnlichkeit2.add(aehnlichesKonto2.getKunde());
+                        kontenAehnlichkeit2.add(aehnlichesKonto2);
+                        kundenAehnlichkeit2.add(dbKunde);
+                        kontenAehnlichkeit2.add(dbKonto);
+                        
+                    }
+
                 }
                 else{
-                    kundenAehnlichkeit2.add(dbKunde);
-                    kontenAehnlichkeit2.add(dbKonto);
+                    kunden.remove(aehnlichesKonto1.getKunde());
+                    konten.remove(aehnlichesKonto1);
+                    kundenAehnlichkeit1.add(aehnlichesKonto1.getKunde());
+                    kontenAehnlichkeit1.add(aehnlichesKonto1);
+                    kundenAehnlichkeit1.add(dbKunde);
+                    kontenAehnlichkeit1.add(dbKonto);
+
                 }
             }
         }
     }
+    
     
     //Methode für die Gross- und Kleinschriebung
     static public String firstLetterCaps ( String data ){
