@@ -31,7 +31,9 @@ public class Main {
             
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");
-            
+            System.out.println("********************");
+            System.out.println("Objekte");
+            System.out.println("********************");
             ListIterator<Konto> iterator = integrator.konten.listIterator();
             while(iterator.hasNext()){
                 Konto temp = iterator.next();
@@ -41,7 +43,7 @@ public class Main {
                 System.out.println(temp.getKunde().getAdresse());
                 System.out.println(temp.getKunde().getLaendercode());
                 System.out.println(temp.getKunde().getStatus());
-                System.out.println("***");
+                System.out.println("*** Konto ***");
                 System.out.println(temp.getKunde().getKid());
                 System.out.println(temp.getIban());
                 System.out.println(f.format(temp.getKontostand()));
