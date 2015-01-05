@@ -34,7 +34,7 @@ public class Main {
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");
             System.out.println("********************************************************************************************************************************************");
-            System.out.println("Automatisch integrierte Objekte");
+            System.out.println("Automatisch integrierte Kunden");
             System.out.println("********************************************************************************************************************************************");
             System.out.printf("%-10s %-20s %-20s %-50s %-15s %-10s%n", "Kunden-ID", "Vorname", "Nachname", "Adresse", "Ländercode", "Status");
             System.out.printf("%110s%n", "--------------------------------------------------------------------------------------------------------------------------------------------");
