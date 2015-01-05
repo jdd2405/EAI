@@ -5,6 +5,7 @@
  */
 package ch.fhnw.eai;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.xml.ws.Holder;
@@ -356,7 +357,14 @@ public class Integrator {
             }
         }
         //pruefziffer muss 2stellig sein
-        long pruefziffer = (Integer.parseInt(clearing) + Long.parseLong(kontonummer) +  chInZahlen + 00)%97;
+        String chInBuchst= String.valueOf(chInZahlen);
+        String iban= clearing+kontonummer+chInBuchst+"00";
+        BigInteger iban1= new BigInteger(iban);
+        String ueberpruefungszahl1 = "97";
+        BigInteger ueberpruefungszahl = new BigInteger(ueberpruefungszahl1); 
+        BigInteger pruefziffer1 = iban1.mod(ueberpruefungszahl);
+        int pruefziffer2 = pruefziffer1.intValue();
+        int pruefziffer = 98-pruefziffer2;
         if (pruefziffer <10){
             pruefzifferInText = "0"+pruefziffer;
         }
@@ -375,6 +383,25 @@ public class Integrator {
             if(konto.getIban().length()>21){
                 fehlerhafteKonten.add(konto);
                 iterator.remove();
+            }
+            else{
+                String ch= "1217";
+                String pruefziffern = konto.getIban().substring(2,4);
+                System.out.println(pruefziffern);
+                String kontonummer = konto.getIban().substring(4, 21);
+                System.out.println(kontonummer);
+                String pruefIban = kontonummer+ch+pruefziffern;
+                BigInteger iban = new BigInteger(pruefIban);
+                String ueberpruefungszahl1 = "97";
+                BigInteger ueberpruefungszahl = new BigInteger(ueberpruefungszahl1);
+                BigInteger resultat1 = iban.mod(ueberpruefungszahl);
+                int resultat = resultat1.intValue();
+ 
+                
+                if (resultat!=1){
+                    fehlerhafteKonten.add(konto);
+                    iterator.remove();
+                }
             }
         }
     }
