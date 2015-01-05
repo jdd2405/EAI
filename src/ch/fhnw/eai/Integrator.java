@@ -371,9 +371,7 @@ public class Integrator {
             else{
                 String ch= "1217";
                 String pruefziffern = konto.getIban().substring(2,4);
-                System.out.println(pruefziffern);
                 String kontonummer = konto.getIban().substring(4, 21);
-                System.out.println(kontonummer);
                 String pruefIban = kontonummer+ch+pruefziffern;
                 BigInteger iban = new BigInteger(pruefIban);
                 String ueberpruefungszahl1 = "97";
