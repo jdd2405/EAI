@@ -5,6 +5,8 @@
  */
 package ch.fhnw.eai;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author Jonas

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
  * @author Jonas
  */
 public class Main {
-    
 
     public static void main(String[] args) {
         try {
@@ -24,55 +23,72 @@ public class Main {
             Integrator integrator = new Integrator();
             integrator.extrahiereKontokorrente();
             integrator.extrahiereSparkonten();
-            
+
             DBAccess db = new DBAccess();
-            ArrayList <DBDaten> DBdaten =db.readDataBase();
+            ArrayList<DBDaten> DBdaten = db.readDataBase();
             integrator.DBDatenFormatieren(DBdaten);
+
+            
             
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");
-            System.out.println("********************");
-            System.out.println("Objekte");
-            System.out.println("********************");
-            ListIterator<Konto> iterator = integrator.konten.listIterator();
-            while(iterator.hasNext()){
-                Konto temp = iterator.next();
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getKunde().getVorname());
-                System.out.println(temp.getKunde().getNachname());
-                System.out.println(temp.getKunde().getAdresse());
-                System.out.println(temp.getKunde().getLaendercode());
-                System.out.println(temp.getKunde().getStatus());
-                System.out.println("*** Konto ***");
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getIban());
-                System.out.println(f.format(temp.getKontostand()));
-                System.out.println(temp.getKontoart());
-                System.out.println("******************");
-            }
+            System.out.println("********************************************************************************************************************************************");
+            System.out.println("Automatisch integrierte Objekte");
+            System.out.println("********************************************************************************************************************************************");
+            System.out.printf("%-10s %-20s %-20s %-50s %-15s %-10s%n", "Kunden-ID", "Vorname", "Nachname", "Adresse", "Ländercode", "Status");
+            System.out.printf("%110s%n", "--------------------------------------------------------------------------------------------------------------------------------------------");
             
-            System.out.println("");
-            System.out.println("Konten die eine Ähnlichkeit aufweisen");
-            System.out.println("");
-            
-            ListIterator<Konto> iterator2 = integrator.kontenAehnlichkeit.listIterator();
-            while(iterator2.hasNext()){
-                Konto temp = iterator2.next();
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getKunde().getVorname());
-                System.out.println(temp.getKunde().getNachname());
-                System.out.println(temp.getKunde().getAdresse());
-                System.out.println(temp.getKunde().getLaendercode());
-                System.out.println(temp.getKunde().getStatus());
-                System.out.println("***");
-                System.out.println(temp.getKunde().getKid());
-                System.out.println(temp.getIban());
-                System.out.println(f.format(temp.getKontostand()));
-                System.out.println(temp.getKontoart());
-                System.out.println("******************");
-            }
+            ListIterator<Kunde> iterator = integrator.kunden.listIterator();
+            while (iterator.hasNext()) {
+                Kunde kunde = iterator.next();
+                System.out.printf("%-10s %-20s %-20s %-50s %-15s %-10s%n", 
+                        kunde.getKid(), 
+                        kunde.getVorname(), 
+                        kunde.getNachname(), 
+                        kunde.getAdresse(), 
+                        kunde.getLaendercode(),
+                        kunde.getStatus());
 
-          
+                /*ListIterator<Konto> iterator2 = integrator.konten.listIterator();
+                while (iterator2.hasNext()) {
+                    Konto konto = iterator2.next();
+                    if (konto.getKunde().kid == kunde.kid) {
+                        System.out.println("*** Konto ***");
+                        System.out.println(konto.getKunde().getKid());
+                        System.out.println(konto.getIban());
+                        System.out.println(f.format(konto.getKontostand()));
+                        System.out.println(konto.getKontoart());
+                        System.out.println("******************");
+                    }
+                }*/
+            }
+            System.out.println("");
+            System.out.println("*******************************************************************************************************************************************");
+            System.out.println("Bitte Überprügen! Kunden die eine Ähnlichkeit aufweisen");
+            System.out.println("*******************************************************************************************************************************************");
+            
+            System.out.printf("%-10s %-20s %-20s %-50s %-15s %-10s%n", "Kunden-ID", "Vorname", "Nachname", "Adresse", "Ländercode", "Status");
+            System.out.printf("%110s%n", "-------------------------------------------------------------------------------------------------------------------------------------------");
+            
+            ListIterator<Kunde> iterator2 = integrator.kundenAehnlichkeit.listIterator();
+            while (iterator2.hasNext()) {
+                Kunde kunde = iterator2.next();
+                String id = String.valueOf(kunde.getKid());
+                if(kunde.getKid()==0){
+                    id = "";
+                }
+                    
+                System.out.printf("%-10s %-20s %-20s %-50s %-15s %-10s%n", 
+                        id, 
+                        kunde.getVorname(), 
+                        kunde.getNachname(), 
+                        kunde.getAdresse(), 
+                        kunde.getLaendercode(),
+                        kunde.getStatus());
+            }
+            
+            
+
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

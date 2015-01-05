@@ -85,43 +85,26 @@ public class Integrator {
             }
             else if(pruefeEindeutigkeit(kunde, kundenAehnlichkeit) != null){
                 konto.setKunde(pruefeEindeutigkeit(kunde, kundenAehnlichkeit));
-                kontenAehnlichkeit.add(konto);
+                konten.add(konto);
             }
             //Aehnlichkeit prüfen
             else {
-                aehnlichesKonto1 = pruefeAehnlichkeit1(kunde, konten);
+                aehnlichesKonto1 = pruefeAehnlichkeit(kunde);
                 if (aehnlichesKonto1==null){
-                    if(pruefeAehnlichkeit1(kunde, kontenAehnlichkeit)==null){
-                        if(pruefeAehnlichkeit2(kunde, konten)==null){
-                            if(pruefeAehnlichkeit2(kunde, kontenAehnlichkeit)==null){
-                                kunde.setKid(kunden.size()+1);
-                                kunden.add(kunde);
-                                konten.add(konto);
-                            }
-                            else{
-                                kundenAehnlichkeit.add(kunde);
-                                kontenAehnlichkeit.add(konto);
-                            }
-                        }
-                        else{
-                            Konto temp= (pruefeAehnlichkeit2(kunde, konten));
-                            kunden.remove(temp.getKunde());konten.remove(temp);
-                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
-                            kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
-                        }
-                    }
-                    else{
-                        kundenAehnlichkeit.add(kunde);
-                        kontenAehnlichkeit.add(konto);
-                    }
+                        kunde.setKid(kunden.size()+1);
+                        kunden.add(kunde);
+                        konten.add(konto);
                 }
+                    
                 else{
-                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                    kundenAehnlichkeit.add(kunde);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(kunden.contains(aehnlichesKonto1.getKunde())){
+                        kunden.remove(aehnlichesKonto1.getKunde());
+                    }                        
                 }
             }
-            
+
         } 
     }
     
@@ -170,42 +153,22 @@ public class Integrator {
             }
             //Aehnlichkeit prüfen
             else {
-                aehnlichesKonto1 = pruefeAehnlichkeit1(kunde, konten);
+                aehnlichesKonto1 = pruefeAehnlichkeit(kunde);
                 if (aehnlichesKonto1==null){
-                    if(pruefeAehnlichkeit1(kunde, kontenAehnlichkeit)==null){
-                        if(pruefeAehnlichkeit2(kunde, konten)==null){
-                            if(pruefeAehnlichkeit2(kunde, kontenAehnlichkeit)==null){
-                                kunde.setKid(kunden.size()+1);
-                                kunden.add(kunde);
-                                konten.add(konto);
-                            }
-                            else{
-                                kundenAehnlichkeit.add(kunde);
-                                kontenAehnlichkeit.add(konto);
-                            }
-                        }
-                        else{
-                            Konto temp= (pruefeAehnlichkeit2(kunde, konten));
-                            kunden.remove(temp.getKunde());konten.remove(temp);
-                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
-                            kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
-                        }
-                    }
-                    else{
-                        kundenAehnlichkeit.add(kunde);
-                        kontenAehnlichkeit.add(konto);
-                    }
+                        kunde.setKid(kunden.size()+1);
+                        kunden.add(kunde);
+                        konten.add(konto);
                 }
+                    
                 else{
-                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(kunde);kontenAehnlichkeit.add(konto);
+                    kundenAehnlichkeit.add(kunde);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(kunden.contains(aehnlichesKonto1.getKunde())){
+                        kunden.remove(aehnlichesKonto1.getKunde());
+                    }                    
                 }
             }
-            
-            
-            
-            
+
         } 
     }
     
@@ -290,36 +253,19 @@ public class Integrator {
             
             //Aehnlichkeit prüfen
             else {
-                aehnlichesKonto1 = pruefeAehnlichkeit1(dbKunde, konten);
+                aehnlichesKonto1 = pruefeAehnlichkeit(dbKunde);
                 if (aehnlichesKonto1==null){
-                    if(pruefeAehnlichkeit1(dbKunde, kontenAehnlichkeit)==null){
-                        if(pruefeAehnlichkeit2(dbKunde, konten)==null){
-                            if(pruefeAehnlichkeit2(dbKunde, kontenAehnlichkeit)==null){
-                                dbKunde.setKid(kunden.size()+1);
-                                kunden.add(dbKunde);
-                                konten.add(dbKonto);
-                            }
-                            else{
-                                kundenAehnlichkeit.add(dbKunde);
-                                kontenAehnlichkeit.add(dbKonto);
-                            }
-                        }
-                        else{
-                            Konto temp= (pruefeAehnlichkeit2(dbKunde, konten));
-                            kunden.remove(temp.getKunde());konten.remove(temp);
-                            kundenAehnlichkeit.add(temp.getKunde());kontenAehnlichkeit.add(temp);
-                            kundenAehnlichkeit.add(dbKunde);kontenAehnlichkeit.add(dbKonto);
-                        }
-                    }
-                    else{
-                        kundenAehnlichkeit.add(dbKunde);
-                        kontenAehnlichkeit.add(dbKonto);
-                    }
+                        dbKunde.setKid(kunden.size()+1);
+                        kunden.add(dbKunde);
+                        konten.add(dbKonto);
                 }
+                    
                 else{
-                    kunden.remove(aehnlichesKonto1.getKunde());konten.remove(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());kontenAehnlichkeit.add(aehnlichesKonto1);
-                    kundenAehnlichkeit.add(dbKunde);kontenAehnlichkeit.add(dbKonto);
+                    kundenAehnlichkeit.add(dbKunde);
+                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(kunden.contains(aehnlichesKonto1.getKunde())){
+                        kunden.remove(aehnlichesKonto1.getKunde());
+                    }                    
                 }
             }
         }
@@ -343,8 +289,8 @@ public class Integrator {
     
     
     
-    public Konto pruefeAehnlichkeit1(Kunde kunde, ArrayList<Konto> durchsuchungsliste){
-        ListIterator<Konto> iterator = durchsuchungsliste.listIterator();
+    public Konto pruefeAehnlichkeit(Kunde kunde){
+        ListIterator<Konto> iterator = konten.listIterator();
         while(iterator.hasNext()){
             Konto tempKonto = iterator.next();
         
@@ -354,30 +300,18 @@ public class Integrator {
             String nachnameOhneUmlaut = kunde.nachname.replace("ü", "ue");
             String nachnameMitUmlaut = kunde.nachname.replace("ue", "ü");
             if(tempKonto.getKunde().vorname.equals(kunde.vorname)&&(tempKonto.getKunde().nachname.equals(nachnameOhneUmlaut)||tempKonto.getKunde().nachname.equals(nachnameMitUmlaut))&&tempKonto.getKunde().adresse.contains(trennePlzOrt[0])){
-               //kunden.remove(tempKunde);
-               //kundenAehnlichkeit1.add(tempKunde);
                
                return tempKonto; 
+            }
+            if(tempKonto.getKunde().adresse.equals(kunde.adresse)&&((kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().vorname) ||(kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().nachname))){
+               
+               return tempKonto;
+               
             }
         }
         return null;
     }
     
-    public Konto pruefeAehnlichkeit2(Kunde kunde, ArrayList<Konto> durchsuchungsliste) {
-        ListIterator<Konto> iterator = durchsuchungsliste.listIterator();
-        while(iterator.hasNext()){
-            Konto tempKonto = iterator.next();
-            //zweite Aehnlichkeitsueberpruefung
-            if(tempKonto.getKunde().adresse.equals(kunde.adresse)&&((kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().vorname) ||(kunde.vorname + kunde.nachname).contains(tempKonto.getKunde().nachname))){
-               //kunden.remove(tempKunde);
-               //kundenAehnlichkeit2.add(tempKunde);
-               return tempKonto;
-               
-            }
-
-        }
-        return null;
-    }
     
     
     //Methode für die Gross- und Kleinschriebung
