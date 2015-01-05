@@ -29,6 +29,7 @@ public class Main {
             integrator.DBDatenFormatieren(DBdaten);
 
             integrator.pruefeKonten();
+            integrator.kundenIDverteilen();
             
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");

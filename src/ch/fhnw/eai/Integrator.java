@@ -96,6 +96,7 @@ public class Integrator {
                     
                 else{
                     kundenAehnlichkeit.add(kunde);
+                    konten.add(konto);
                     if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
                         kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
                     }
@@ -161,6 +162,7 @@ public class Integrator {
                     
                 else{
                     kundenAehnlichkeit.add(kunde);
+                    konten.add(konto);
                     if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
                         kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
                     }
@@ -261,8 +263,8 @@ public class Integrator {
                     
                 else{
                     kundenAehnlichkeit.add(dbKunde);
+                    konten.add(dbKonto);
                     if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
-                        
                         kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
                     }
                     if(kunden.contains(aehnlichesKonto1.getKunde())){
