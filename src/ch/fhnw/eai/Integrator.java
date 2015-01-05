@@ -24,7 +24,6 @@ public class Integrator {
     
     //Objekte die eine Ähnlichkeit aufweisen
     public ArrayList<Kunde> kundenAehnlichkeit;
-    public ArrayList<Konto> kontenAehnlichkeit;
 
     
     
@@ -39,7 +38,6 @@ public class Integrator {
         kunden = new ArrayList<Kunde>();
         konten = new ArrayList<Konto>();
         kundenAehnlichkeit = new ArrayList<Kunde>();
-        kontenAehnlichkeit = new ArrayList<Konto>();
 
     }
     
@@ -91,17 +89,18 @@ public class Integrator {
             else {
                 aehnlichesKonto1 = pruefeAehnlichkeit(kunde);
                 if (aehnlichesKonto1==null){
-                        kunde.setKid(kunden.size()+1);
                         kunden.add(kunde);
                         konten.add(konto);
                 }
                     
                 else{
                     kundenAehnlichkeit.add(kunde);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
+                        kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    }
                     if(kunden.contains(aehnlichesKonto1.getKunde())){
                         kunden.remove(aehnlichesKonto1.getKunde());
-                    }                        
+                    }                    
                 }
             }
 
@@ -149,20 +148,21 @@ public class Integrator {
             }
             else if(pruefeEindeutigkeit(kunde, kundenAehnlichkeit) != null){
                 konto.setKunde(pruefeEindeutigkeit(kunde, kundenAehnlichkeit));
-                kontenAehnlichkeit.add(konto);
+                konten.add(konto);
             }
             //Aehnlichkeit prüfen
             else {
                 aehnlichesKonto1 = pruefeAehnlichkeit(kunde);
                 if (aehnlichesKonto1==null){
-                        kunde.setKid(kunden.size()+1);
                         kunden.add(kunde);
                         konten.add(konto);
                 }
                     
                 else{
                     kundenAehnlichkeit.add(kunde);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
+                        kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    }
                     if(kunden.contains(aehnlichesKonto1.getKunde())){
                         kunden.remove(aehnlichesKonto1.getKunde());
                     }                    
@@ -231,8 +231,6 @@ public class Integrator {
             else if(dbKundeFromIterator.land.equals("The Netherlands")){
                 dbKunde.laendercode = "NL";
             }
-            //Status
-            dbKonto.getKunde().setStatus("not defined status");
             //Kontostand
             dbKonto.setKontostand(dbKundeFromIterator.saldo);
             //Kontoart
@@ -248,21 +246,24 @@ public class Integrator {
             }
             else if(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit) != null){
                 dbKonto.setKunde(pruefeEindeutigkeit(dbKunde, kundenAehnlichkeit));
-                kontenAehnlichkeit.add(dbKonto);
+                konten.add(dbKonto);
             }
             
+            //Aehnlichkeit prüfen
             //Aehnlichkeit prüfen
             else {
                 aehnlichesKonto1 = pruefeAehnlichkeit(dbKunde);
                 if (aehnlichesKonto1==null){
-                        dbKunde.setKid(kunden.size()+1);
                         kunden.add(dbKunde);
                         konten.add(dbKonto);
                 }
                     
                 else{
                     kundenAehnlichkeit.add(dbKunde);
-                    kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    if(!kundenAehnlichkeit.contains(aehnlichesKonto1.getKunde())){
+                        
+                        kundenAehnlichkeit.add(aehnlichesKonto1.getKunde());
+                    }
                     if(kunden.contains(aehnlichesKonto1.getKunde())){
                         kunden.remove(aehnlichesKonto1.getKunde());
                     }                    
@@ -359,7 +360,11 @@ public class Integrator {
         return ibannummer;
     }
 
-    
+    public void kundenIDverteilen(){
+        for(int i = 0; i<kunden.size();i++){
+            kunden.get(i).setKid(i+1);
+        }
+    }
     
     
     

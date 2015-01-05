@@ -27,8 +27,9 @@ public class Main {
             DBAccess db = new DBAccess();
             ArrayList<DBDaten> DBdaten = db.readDataBase();
             integrator.DBDatenFormatieren(DBdaten);
-
             
+            integrator.kundenIDverteilen();
+
             
             //Kontostand 2 Nachkommastellen
             DecimalFormat f = new DecimalFormat("#0.00");
