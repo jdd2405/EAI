@@ -209,10 +209,10 @@ public class Integrator {
                 dbKunde.vorname = name[1];
                 dbKunde.nachname = name[2];
             }
-            else if (name.length == 3 && name[0].equals("M.")){
+            /*else if (name.length == 3 && name[0].equals("M.")){
                 dbKunde.vorname = name[0] + " " + name[1];
                 dbKunde.nachname = name[2]; 
-            }
+            }*/
             else if (name.length == 3){
                 dbKunde.vorname = name[0];
                 dbKunde.nachname = name[1]+ " " + name[2]; 
