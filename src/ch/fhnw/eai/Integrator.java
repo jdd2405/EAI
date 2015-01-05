@@ -26,7 +26,7 @@ public class Integrator {
     public ArrayList<Kunde> kundenAehnlichkeit;
     public ArrayList<Konto> kontenAehnlichkeit;
 
-    
+    public ArrayList<Konto> fehlerhafteKonten;
     
     Kunde eindeutigerKunde;
     Konto aehnlichesKonto1;
@@ -41,6 +41,7 @@ public class Integrator {
         kundenAehnlichkeit = new ArrayList<Kunde>();
         kontenAehnlichkeit = new ArrayList<Konto>();
 
+        fehlerhafteKonten = new ArrayList();
     }
     
     public void extrahiereKontokorrente(){
@@ -357,6 +358,17 @@ public class Integrator {
         //zusammensetzung zum Endresultat
         ibannummer = "CH" + pruefzifferInText + clearing + kontonummer;
         return ibannummer;
+    }
+    
+    public void pruefeKonten(){
+        ListIterator<Konto> iterator = fehlerhafteKonten.listIterator();
+        while(iterator.hasNext()){
+            Konto konto = iterator.next();
+            if(konto.getIban().length()<21){
+                fehlerhafteKonten.add(konto);
+                konten.remove(konto);
+            }
+        }
     }
 
     
