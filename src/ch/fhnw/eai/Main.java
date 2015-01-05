@@ -93,7 +93,7 @@ public class Main {
             System.out.println("Automatisch integrierte Konten");
             System.out.println("*******************************************************************************************************************************************");
             
-            System.out.printf("%-25s %-10s %-20s %-20s %-10s %-20s%n", "IBAN", "Kunden-ID", "Vorname", "Nachname", "Kontostand", "Kontoart");
+            System.out.printf("%-25s %-10s %-20s %-20s %15s %-5s %-20s%n", "IBAN", "Kunden-ID", "Vorname", "Nachname", "Kontostand", "Währung", "Kontoart");
             System.out.printf("%110s%n", "-------------------------------------------------------------------------------------------------------------------------------------------");
             
             ListIterator<Konto> iterator3 = integrator.konten.listIterator();
@@ -105,12 +105,13 @@ public class Main {
                     id = "";
                 }
                     
-                System.out.printf("%-25s %-10s %-20s %-20s %-10s %-20s%n", 
+                System.out.printf("%-25s %-10s %-20s %-20s %15.2f %-5s %-20s%n", 
                         konto.getIban(),
                         id, 
                         kunde.getVorname(), 
                         kunde.getNachname(), 
                         konto.getKontostand(),
+                        "CHF",
                         konto.getKontoart());
             }
             
@@ -120,24 +121,25 @@ public class Main {
             System.out.println("Fehlerhafte Konten");
             System.out.println("*******************************************************************************************************************************************");
             
-            System.out.printf("%-25s %-10s %-20s %-20s %-10s %-20s%n", "IBAN", "Kunden-ID", "Vorname", "Nachname", "Kontostand", "Kontoart");
+            System.out.printf("%-25s %-10s %-20s %-20s %15s %-5s %-20s%n", "IBAN", "Kunden-ID", "Vorname", "Nachname", "Kontostand", "Währung", "Kontoart");
             System.out.printf("%110s%n", "-------------------------------------------------------------------------------------------------------------------------------------------");
             
             ListIterator<Konto> iterator4 = integrator.fehlerhafteKonten.listIterator();
             while (iterator4.hasNext()) {
-                Konto konto = iterator3.next();
+                Konto konto = iterator4.next();
                 Kunde kunde = konto.getKunde();
                 String id = String.valueOf(kunde.getKid());
                 if(kunde.getKid()==0){
                     id = "";
                 }
                     
-                System.out.printf("%-25s %-10s %-20s %-20s %-10s %-20s%n", 
+                System.out.printf("%-25s %-10s %-20s %-20s %15.2f %-5s %-20s%n", 
                         konto.getIban(),
                         id, 
                         kunde.getVorname(), 
                         kunde.getNachname(), 
                         konto.getKontostand(),
+                        "CHF",
                         konto.getKontoart());
             }
             

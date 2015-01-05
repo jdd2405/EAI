@@ -361,12 +361,12 @@ public class Integrator {
     }
     
     public void pruefeKonten(){
-        ListIterator<Konto> iterator = fehlerhafteKonten.listIterator();
+        ListIterator<Konto> iterator = konten.listIterator();
         while(iterator.hasNext()){
             Konto konto = iterator.next();
-            if(konto.getIban().length()<21){
+            if(konto.getIban().length()>21){
                 fehlerhafteKonten.add(konto);
-                konten.remove(konto);
+                iterator.remove();
             }
         }
     }
